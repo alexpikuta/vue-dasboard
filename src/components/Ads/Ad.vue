@@ -3,15 +3,15 @@
     <v-layout row>
       <v-flex xs12>
         <v-card>
-          <v-card-media>
+          <v-responsive>
             <v-img
-              src="https://cdn.vuetifyjs.com/images/carousel/planet.jpg"
+              :src="ad.imageSrc"
               height="300"
             ></v-img>
-          </v-card-media>
+          </v-responsive>
           <v-card-text>
-            <h1 class="text--primary">title</h1>
-            <h3 class="text--secondary">description</h3>
+            <h1 class="text--primary">{{ ad.title }}</h1>
+            <h3 class="text--secondary">{{ ad.description }}</h3>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -31,9 +31,11 @@
 
 <script>
   export default {
-    data () {
-      return {
-  
+    props: ['id'],
+    computed: {
+      ad () {
+        const id = this.id
+        return this.$store.getters.adById(id)
       }
     }
   }
