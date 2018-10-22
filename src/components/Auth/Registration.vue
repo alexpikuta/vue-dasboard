@@ -10,7 +10,7 @@
             <v-form ref="form" v-model="valid" lazy-validation>
               <v-text-field
                 prepend-icon="email"
-                name="Email"
+                name="email"
                 label="Email"
                 type="email"
                 :rules="emailRules"
