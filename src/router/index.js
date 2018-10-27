@@ -8,6 +8,7 @@ import NewAd from '@/components/Ads/NewAd'
 import Login from '@/components/Auth/Login'
 import Registration from '@/components/Auth/Registration'
 import Orders from '@/components/User/Orders'
+import guard from './guard'
 
 Vue.use(Router)
 
@@ -27,12 +28,14 @@ export default new Router({
     {
       path: '/list',
       name: 'list',
-      component: AdList
+      component: AdList,
+      beforeEnter: guard
     },
     {
       path: '/new',
       name: 'newAd',
-      component: NewAd
+      component: NewAd,
+      beforeEnter: guard
     },
     {
       path: '/login',
@@ -47,7 +50,8 @@ export default new Router({
     {
       path: '/orders',
       name: 'orders',
-      component: Orders
+      component: Orders,
+      beforeEnter: guard
     }
   ],
   mode: 'history'

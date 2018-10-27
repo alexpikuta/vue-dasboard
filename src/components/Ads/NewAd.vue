@@ -52,8 +52,9 @@
       <v-flex xs12 sm8 offset-sm2>
         <v-spacer></v-spacer>
         <v-btn
+          :loading="loading"
           class="success"
-          :disabled="!valid"
+          :disabled="!valid || loading"
           @click="createAd"
         >
           Create Ad
@@ -73,6 +74,11 @@
         valid: false
       }
     },
+    computed: {
+      loading () {
+        return this.$store.getters.loading
+      }
+    },
     methods: {
       createAd () {
         if (this.$refs.form.validate()) {
@@ -83,6 +89,9 @@
             imageSrc: 'https://cdn-images-1.medium.com/max/1200/1*-PlqbnwqjqJi_EVmrhmuDQ.jpeg'
           }
           this.$store.dispatch('createAd', ad)
+            .then(() => {
+              this.$router.push('/list')
+            })
         }
       }
     }
