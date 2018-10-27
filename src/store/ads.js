@@ -38,20 +38,20 @@ export default {
         throw error
       }
     },
-    // async fetchAds ({commit}) {
-    //   commit('clearError')
-    //   commit('setLoading', true)
-    //   try {
-    //     const frbVal = await frb.database.ref('ads').once('value')
-    //     const ads = frbVal.val()
-    //     console.log(ads)
+    async fetchAds ({commit}) {
+      commit('clearError')
+      commit('setLoading', true)
+      try {
+        const frbVal = await frb.database.ref('ads').once('value')
+        const ads = frbVal.val()
+        console.log(ads)
 
-    //     commit('setLoading', false)
-    //   } catch (error) {
-    //     commit('setLoading', false)
-    //     commit('setError', error.message)
-    //     throw error
-    //   }
+        commit('setLoading', false)
+      } catch (error) {
+        commit('setLoading', false)
+        commit('setError', error.message)
+        throw error
+      }
     }
   },
   getters: {
