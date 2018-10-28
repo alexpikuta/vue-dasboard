@@ -17,6 +17,9 @@ export default {
   mutations: {
     createAd (state, payload) {
       state.ads.push(payload)
+    },
+    loadAds (state, payload) {
+      state.ads = payload
     }
   },
   actions: {
@@ -41,15 +44,22 @@ export default {
     async fetchAds ({commit}) {
       commit('clearError')
       commit('setLoading', true)
+      const resultAds = []
       try {
-        const frbVal = await frb.database.ref('ads').once('value')
+        const frbVal = await frb.database().ref('ads').once('value')
         const ads = frbVal.val()
-        console.log(ads)
 
+        Object.keys(ads).forEach(key => {
+          const ad = ads[key]
+          resultAds.push(
+            new Ad(ad.title, ad.description, ad.ownerId, ad.imageSrc, ad.promo, key)
+          )
+        })
+        commit('loadAds', resultAds)
         commit('setLoading', false)
       } catch (error) {
-        commit('setLoading', false)
         commit('setError', error.message)
+        commit('setLoading', false)
         throw error
       }
     }
