@@ -26,14 +26,25 @@ export default {
     async createAd ({commit, getters}, payload) {
       commit('clearError')
       commit('setLoading', true)
+
+      const image = payload.image
       try {
-        const newAd = new Ad(payload.title, payload.description, getters.user.id, payload.imageSrc, payload.promo)
+        const newAd = new Ad(payload.title, payload.description, getters.user.id, '', payload.promo)
         const ad = await frb.database().ref('ads').push(newAd)
+        const imageExt = image.name.slice(image.name.lastIndexOf('.'))
+
+        const fileData = await frb.storage().ref(`ads/${ad.key}${imageExt}`).put(image)
+        const imageSrc = fileData.metadata.downloadURLs[0]
+        await console.log(imageSrc)
+        await frb.database().ref('ads').child(ad.key).update({
+          imageSrc
+        })
 
         commit('setLoading', false)
         commit('createAd', {
           ...newAd,
-          id: ad.key
+          id: ad.key,
+          imageSrc
         })
       } catch (error) {
         commit('setLoading', false)

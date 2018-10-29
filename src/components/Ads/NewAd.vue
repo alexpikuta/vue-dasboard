@@ -29,15 +29,27 @@
         <v-btn
           color="blue-grey"
           class="warning"
+          @click="triggerUpload"
         >
           Upload
           <v-icon right dark>cloud_upload</v-icon>
         </v-btn>
+        <input
+          type="file"
+          style="display: none"
+          accept="image/*"
+          ref="fileInput"
+          @change="onFileChange"
+        >
       </v-flex>
     </v-layout>
     <v-layout row class="mt-3">
       <v-flex xs12 sm8 offset-sm2>
-        <img src="" height="120">
+        <img
+          :src="imageSrc"
+          height="120"
+          v-if="imageSrc"
+        >
       </v-flex>
     </v-layout>
     <v-layout row class="mt-3">
@@ -54,7 +66,7 @@
         <v-btn
           :loading="loading"
           class="success"
-          :disabled="!valid || loading"
+          :disabled="!valid || !image || loading"
           @click="createAd"
         >
           Create Ad
@@ -71,7 +83,9 @@
         title: '',
         description: '',
         promo: false,
-        valid: false
+        valid: false,
+        image: null,
+        imageSrc: ''
       }
     },
     computed: {
@@ -81,18 +95,30 @@
     },
     methods: {
       createAd () {
-        if (this.$refs.form.validate()) {
+        if (this.$refs.form.validate() && this.image) {
           const ad = {
             title: this.title,
             description: this.description,
             promo: this.promo,
-            imageSrc: 'https://cdn-images-1.medium.com/max/1200/1*-PlqbnwqjqJi_EVmrhmuDQ.jpeg'
+            image: this.image
           }
           this.$store.dispatch('createAd', ad)
             .then(() => {
               this.$router.push('/list')
             })
         }
+      },
+      triggerUpload () {
+        this.$refs.fileInput.click()
+      },
+      onFileChange (event) {
+        const file = event.target.files[0]
+        const reader = new FileReader()
+        reader.onload = e => {
+          this.imageSrc = reader.result
+        }
+        reader.readAsDataURL(file)
+        this.image = file
       }
     }
   }
