@@ -4,7 +4,7 @@ class Ad {
   constructor (title, description, ownerId, imageSrc = '', promo = false, id = null) {
     this.title = title
     this.description = description
-    this.ownerId = ownerId
+    this.ownerId = ownerId || null
     this.imageSrc = imageSrc
     this.promo = promo
     this.id = id
@@ -35,7 +35,6 @@ export default {
 
         const fileData = await frb.storage().ref(`ads/${ad.key}${imageExt}`).put(image)
         const imageSrc = fileData.metadata.downloadURLs[0]
-        await console.log(imageSrc)
         await frb.database().ref('ads').child(ad.key).update({
           imageSrc
         })
