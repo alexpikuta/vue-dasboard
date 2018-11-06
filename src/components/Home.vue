@@ -50,7 +50,7 @@
                 :to="'/ad/' + ad.id"
                 flat
               >Open</v-btn>
-              <v-btn raised color="primary">Buy</v-btn>
+              <buy-modal :ad="ad"></buy-modal>
             </v-card-actions>
           </v-card>
         </v-flex>

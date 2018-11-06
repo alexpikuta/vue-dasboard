@@ -3,10 +3,12 @@ import App from './App'
 import router from './router'
 import store from './store'
 import Vuetify from 'vuetify'
+import BuyModalComponent from './components/Shared/BuyModal'
 import * as frb from 'firebase'
 import 'vuetify/dist/vuetify.min.css'
 
 Vue.use(Vuetify)
+Vue.component('buy-modal', BuyModalComponent)
 
 Vue.config.productionTip = false
 Vue.config.performance = true
